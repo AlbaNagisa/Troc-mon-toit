@@ -7,13 +7,12 @@ use Twig\Environment;
 class PageNotFound
 {
 
-    public function __construct(private Environment $twig)
+    public function __construct(private Environment $twig, array $params)
     {
     }
 
     public function index(): void
     {
-        session_start();
         $counter = isset($_SESSION['counter']) ? $_SESSION['counter'] : 0;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
