@@ -7,108 +7,44 @@ use Twig\Environment;
 class Router
 {
 
-    public $url;
-    public function __construct(private Environment $twig)
+    private array $routes = [];
+    private static $instance = null;
+
+    private function __construct(private Environment $twig)
     {
     }
 
-    function dirToArray($dir)
+    public static function getInstance(Environment $twig): self
     {
-        $result = array();
-        $cdir = scandir($dir);
-        foreach ($cdir as $key => $value) {
-            if (!in_array($value, array(".", ".."))) {
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
-                    $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-                } else {
-                    $result[] = $value;
+        if (self::$instance == null) {
+            self::$instance = new self($twig);
+        }
+        return self::$instance;
+    }
+
+    public function register(string $method, string $path, $controller, $action): void
+    {
+        if (class_exists($controller)) {
+            if (method_exists($controller, $action)) {
+                if (!isset($this->routes[$path])) {
+                    $this->routes[$path][$method] = $controller . "@" . $action;
                 }
             }
         }
-        return $result;
     }
 
-    public function init(): void
+    public function dispatch()
     {
-        $route = $this->dirToArray(__DIR__ . "/../app/controllers/");
-        $this->url = explode("?", $_SERVER['REQUEST_URI'])[0];
-        if (substr($this->url, -1) != "/") {
-            $this->url = $this->url . "/";
-        }
-        // $this->params = explode("?", $_SERVER['REQUEST_URI'])[1];
-
-        $cutUrl = array_slice(explode("/", strtolower($this->url)), 1);
-        $checkedURL = $this->checkURL($cutUrl, $route);
-        if ($checkedURL[0]) {
-            if (count($checkedURL[1]) != 0) {
-                foreach ($checkedURL[1] as $key => $value) {
-                    $cutUrl[$value[1]] = ":" . $key;
-                    $checkedURL[1][$key] = $value[0];
-                }
-            }
-            $this->render($cutUrl, $checkedURL[1] ?? []);
-
+        $path = $_SERVER['REQUEST_URI'];
+        $method = $_SERVER['REQUEST_METHOD'];
+        if (isset($this->routes[$path][$method])) {
+            $controller = explode("@", $this->routes[$path][$method])[0];
+            $action = explode("@", $this->routes[$path][$method])[1];
+            $controller = new $controller();
+            $controller->$action();
         } else {
-            $this->render(["404"], $checkedURL[1] ?? []);
+            echo "404";
         }
     }
 
-    public function render(array $url, array $params): void
-    {
-
-        $lastElem = $url[count($url) - 1];
-        if ($url[count($url) - 1] == "") {
-            $url[count($url) - 1] = "page";
-        }
-
-        $url = implode("/", $url);
-        $url = str_contains($url, ".php") ? $url : $url . ".php";
-        require __DIR__ . "/../app/controllers/" . $url;
-        if ($lastElem == "404") {
-            $lastElem = "PageNotFound";
-        } else if ($lastElem == "") {
-            $lastElem = "page";
-        }
-
-        if (class_exists("Controllers\\" . ucfirst($lastElem))) {
-            $class = "Controllers\\" . ucfirst($lastElem);
-            $class = new $class($this->twig, $params);
-            $class->index();
-
-        } else {
-            $this->render(["404"], $params);
-        }
-    }
-    private function checkURL(array $url, mixed $route, $indexInUrl = 0, $params = []): array
-    {
-        $res = [false, $params];
-        $value = $url[0];
-        if (array_key_exists($value, $route)) {
-            $route = $route[$value];
-            return $this->checkURL(array_slice($url, 1), $route, $indexInUrl + 1, $params);
-        }
-
-        if ($value == "") {
-            $value = "page";
-        }
-        if (in_array($value . ".php", $route)) {
-            if (count($url) <= 1) {
-                $res[0] = true;
-            }
-            return $res;
-        }
-        $arrayKey = array_keys($route);
-
-        for ($i = 0; $i < count($arrayKey); $i++) {
-            if (substr($arrayKey[$i], 0, 1) != ":") {
-                continue;
-            }
-            $params[substr($arrayKey[$i], 1)] = [$value, $indexInUrl];
-            $route = $route[$arrayKey[$i]];
-            return $this->checkURL(array_slice($url, 1), $route, $indexInUrl + 1, $params);
-        }
-
-        return $res;
-
-    }
 }
