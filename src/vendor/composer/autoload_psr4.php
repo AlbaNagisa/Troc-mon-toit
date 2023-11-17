@@ -15,6 +15,7 @@ return array(
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
+    'Core\\Enum\\' => array($baseDir . '/app/core/enum'),
     'Core\\' => array($baseDir . '/app/core'),
     'Controllers\\' => array($baseDir . '/app/controllers'),
 );

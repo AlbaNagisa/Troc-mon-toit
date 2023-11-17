@@ -1,4 +1,4 @@
-FROM php:8.0-apache
+FROM php:8.2.12-apache
 #Install additional PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 RUN apt-get update && apt-get install -y \

@@ -45,6 +45,7 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         ),
         'C' => 
         array (
+            'Core\\Enum\\' => 10,
             'Core\\' => 5,
             'Controllers\\' => 12,
         ),
@@ -86,6 +87,10 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Core\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/core/enum',
         ),
         'Core\\' => 
         array (
