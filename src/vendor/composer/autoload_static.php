@@ -31,6 +31,10 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         array (
             'PhpOption\\' => 10,
         ),
+        'M' => 
+        array (
+            'Models\\' => 7,
+        ),
         'G' => 
         array (
             'GrahamCampbell\\ResultType\\' => 26,
@@ -45,7 +49,6 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         ),
         'C' => 
         array (
-            'Core\\Enum\\' => 10,
             'Core\\' => 5,
             'Controllers\\' => 12,
         ),
@@ -76,6 +79,10 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
+        'Models\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/models',
+        ),
         'GrahamCampbell\\ResultType\\' => 
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
@@ -87,10 +94,6 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
-        ),
-        'Core\\Enum\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app/core/enum',
         ),
         'Core\\' => 
         array (

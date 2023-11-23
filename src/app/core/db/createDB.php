@@ -1,5 +1,4 @@
 <?php
-require_once 'connDB.php';
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS `image` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -90,4 +89,4 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `housing_equipment` (
     `id_equipement` INT UNSIGNED NOT NULL
 );");
 
-echo "table user created";
+echo "tables created";

@@ -8,7 +8,8 @@
     "psr-4": {
       "Router\\": "router/",
       "Controllers\\": "app/controllers/",
-      "Core\\": "app/core/"
+      "Core\\": "app/core/",
+      "Models\\": "app/models/"
     }
   }
 }

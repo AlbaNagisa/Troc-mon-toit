@@ -2,27 +2,11 @@
 
 namespace Controllers;
 
-class HomeController
+class HomeController extends Controller
 {
 
-    public function register()
+    public function showPosts()
     {
-        echo "Create User";
+        echo $this->twig->render('home/index.html.twig', ["user" => $_SESSION["user"]]);
     }
-
-    public function login()
-    {
-        echo "Login User";
-    }
-
-    public function delete()
-    {
-        echo "Logout User";
-    }
-
-    public function index()
-    {
-        echo "Hello World";
-    }
-
 }

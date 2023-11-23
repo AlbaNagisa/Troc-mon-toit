@@ -1,0 +1,19 @@
+{% extends "templates/default.html.twig" %}
+
+{% block title %}404
+{% endblock %}
+
+{% block content %}
+	<div class="flex h-screen flex-col justify-center items-center">
+		<h1 class="text-5xl">404</h1>
+		<p class="text-3xl mb-8">Page not found</p>
+		<button class="cursor rounded-xl bg-[#3F4A7A] p-4 text-xl shadow-xl" onclick="returnToHome()">Return to home</button>
+
+
+	</div>
+	<script>
+		function returnToHome() {
+window.location.href = '/';
+}
+	</script>
+{% endblock %}
