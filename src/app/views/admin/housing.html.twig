@@ -1,0 +1,164 @@
+{% extends "templates/default.html.twig" %}
+{% block title %}Admin
+{% endblock
+%}
+{% block content %}
+	<div class="mt-2 ml-2">
+		<a href="/admin" class="text-xl">
+			⇠ Retour au panel admin
+		</a>
+	</div>
+	<div class="flex flex-col items-center gap-10">
+		<div class="text-2xl">Ajouter logement a la liste</div>
+		<form class="flex flex-col w-[20%] gap-3" method="POST" enctype="multipart/form-data">
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" placeholder="Name" name="name" type="text"/>
+			<select class="rounded-xl p-2 bg-[#3F4A7A]" name="type">
+				{% for type in housingTypes %}
+					<option value="{{ type.id }}">{{ type.name }}</option>
+				{% endfor %}
+			</select>
+			<select class="rounded-xl p-2 bg-[#3F4A7A]" name="city">
+				{% for city in cities %}
+					<option value="{{ city.id }}">{{ city.name }}</option>
+				{% endfor %}
+			</select>
+
+			<div class="flex flex-row w-[100%] items-center gap-1">
+				<input class="w-[100%] rounded-xl p-2 bg-[#3F4A7A]" placeholder="Night Price" name="price" type="number"/>
+				<p class="text-2xl">€</p>
+			</div>
+			<label for="uploadFile">Sélectionnez un fichier :</label>
+			<input type="file" id="uploadFile" name="uploadFile"/>
+			<textarea class="rounded-xl p-2 bg-[#3F4A7A]" name="description"></textarea>
+			Equipements :
+			<div class="flex flex-row items-center gap-2">
+				{% for equipment in equipments %}
+					<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" name="equipments[]" value="{{ equipment.id }}"/>
+					<p>{{ equipment.name }}</p>
+				{% endfor %}
+			</div>
+			Service :
+			<div class="flex flex-row items-center gap-2">
+				{% for service in services %}
+					<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" name="services[]" value="{{ service.id }}"/>
+					<p>{{ service.name }}</p>
+				{% endfor %}
+			</div>
+			<input class="rounded-xl p-2 bg-[#3F4A7A] shadow-xl" type="submit" value="Creer"/>
+		</form>
+		<div class="flex flex-col gap-5 w-[90%]">
+			<table>
+				<thead>
+					<tr>
+						<th class="text-2xl">Nom</th>
+						<th class="text-2xl">Type</th>
+						<th class="text-2xl">Ville</th>
+						<th class="text-2xl">Prix</th>
+						<th class="text-2xl">Description</th>
+						<th class="text-2xl">Image</th>
+						<th class="text-2xl">Equipements</th>
+						<th class="text-2xl">Services</th>
+						<th class="text-2xl">Action</th>
+						<th class="text-2xl">Supprimer</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for housing in housings %}
+						<tr>
+							<form action="/admin/housing/modify" method="POST" enctype="multipart/form-data">
+								<td>
+									<input class="bg-[#3F4A7A] w-[50%] rounded-xl" type="text" name="name" value="{{ housing.name }}"/>
+								</td>
+								<td>
+									<select class="rounded-xl p-2 bg-[#3F4A7A]" name="type">
+										{% for type in housingTypes %}
+											<option {% if type.name == housing.type %} selected {% endif %} value="{{ type.id }}">{{ type.name }}</option>
+										{% endfor %}
+									</select>
+								</td>
+								<td>
+									<select class="rounded-xl p-2 bg-[#3F4A7A]" name="city">
+										{% for city in cities %}
+											<option value="{{ city.id }}">{{ city.name }}</option>
+										{% endfor %}
+									</select>
+								</td>
+
+								<td>
+									<input class="bg-[#3F4A7A] w-[50%] rounded-xl" type="number" name="price" value="{{ housing.night_price }}"/>
+									€
+								</td>
+								<td>
+									<input class="bg-[#3F4A7A] w-[50%] rounded-xl" type="text" name="description" value="{{ housing.description }}"/>
+								</td>
+								<td>
+									<input type="file" id="uploadFile" name="uploadFile"/>
+									<img src="data:image/*;base64,{{ housing.image }}" width="150" height="150"/>
+									<input type="checkbox" name="deleteImage"/>
+									Supprimer l'image
+								</td>
+								<td>
+									{% for equipment in equipments  %}
+										{% set found = false %}
+										{% for housingEquipment in housing.equipments %}
+
+											{% if housingEquipment == equipment.name %}
+												{% set found = true %}
+											{% endif %}
+										{% endfor %}
+										{% if found %}
+											<div class="flex">
+												<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" checked name="equipments[]" value="{{ equipment.id }}"/>
+												<p>{{ equipment.name }}</p>
+											</div>
+										{% endif %}
+										{% if not found %}
+											<div class="flex">
+												<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" name="equipments[]" value="{{ equipment.id }}"/>
+												<p>{{ equipment.name }}</p>
+											</div>
+										{% endif %}
+									{% endfor %}
+								</td>
+
+								<td>
+									{% for service in services  %}
+										{% set found = false %}
+										{% for housingservice in housing.services %}
+											{% if housingservice == service.name %}
+												{% set found = true %}
+											{% endif %}
+										{% endfor %}
+										{% if found %}
+											<div class="flex">
+												<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" checked name="services[]" value="{{ service.id }}"/>
+												<p>{{ service.name }}</p>
+											</div>
+										{% endif %}
+										{% if not found %}
+											<div class="flex">
+												<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" name="services[]" value="{{ service.id }}"/>
+												<p>{{ service.name }}</p>
+											</div>
+										{% endif %}
+									{% endfor %}
+								</td>
+								<td>
+									<input type="hidden" name="id" value="{{ housing.id }}"/>
+									<input type="submit" value="Modifier"/>
+								</td>
+
+							</form>
+							<td>
+								<form method="POST" action="/admin/housing/delete">
+									<input type="hidden" name="id" value="{{ housing.id }}"/>
+									<input type="submit" value="Supprimer"/>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>{% endblock %}

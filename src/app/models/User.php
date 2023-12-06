@@ -5,10 +5,6 @@ use PDO;
 
 class User extends Models
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function getByUsername(string $username): mixed
     {

@@ -2,8 +2,6 @@
 
 namespace Controllers;
 
-use Models\User;
-
 class UserController extends Controller
 {
 
@@ -13,7 +11,7 @@ class UserController extends Controller
     }
     public function loginPost()
     {
-        $user = (new User())->getByUsername($_POST['username']);
+        $user = $this->user->getByUsername($_POST['username']);
 
         if (!$user) {
             return header("Location: /login");
@@ -35,13 +33,28 @@ class UserController extends Controller
 
     public function registerPost()
     {
-        $userId = (new User())->create($_POST);
+        $userId = $this->user->create($_POST);
 
         if (!is_int(intval($userId))) {
+            if (isset($_SERVER['HTTP_REFERER'])) {
+                $referringPage = $_SERVER['HTTP_REFERER'];
+                if (str_contains($referringPage, "admin")) {
+                    return header("Location: /admin?userSuccess=false");
+                }
+            }
             echo $this->twig->render('user/register.html.twig', ["error" => $userId]);
             return;
         } else {
-            $user = (new User())->getById(intval($userId));
+            $user = $this->user->getById(intval($userId));
+            if (isset($_SERVER['HTTP_REFERER'])) {
+                $referringPage = $_SERVER['HTTP_REFERER'];
+                if (str_contains($referringPage, "admin") && $user) {
+                    return header("Location: /admin?userSuccess=true");
+                } else if (str_contains($referringPage, "admin") && !$user) {
+                    return header("Location: /admin?userSuccess=false");
+
+                }
+            }
             if (!$user) {
                 echo $this->twig->render('user/register.html.twig', ["error" => "Le nom d'utilisateur/email ou numero de telephone est deja utilise."]);
                 return;

@@ -1,0 +1,32 @@
+{% extends "templates/default.html.twig" %}
+{% block title %}Admin
+{% endblock
+%}
+{% block content %}
+	<div class="ml-3 mt-3 flex flex-col gap-10">
+		<div class="text-2xl">
+			Bienvenue sur le panel d'administration
+			{{ user.username }}
+		</div>
+		<a href='/admin/equipments' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Equipements</a>
+		<a href='/admin/city' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Villes</a>
+		<a href='/admin/housingType' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Type de logement</a>
+		<a href='/admin/service' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Services</a>
+
+
+		<div class="flex flex-col gap-5">
+			<h2 class="text-xl">Creer un utilisateur</h2>
+			{% if userSuccess == ' true' %}
+				<div class="bg-green-500 w-[20%] text-white p-2 rounded">
+					L' utilisateur a bien été créé
+				</div>
+			{% endif %}
+			{% if userSuccess == 'false' %}
+				<div class="bg-red-500 w-[20%] text-white p-2 rounded">
+					l'utilisateur n' a pas pu etre cree
+				</div>
+			{% endif %}
+			{% include "templates/formRegister.html.twig" %}
+		</div>
+	</div>
+{% endblock %}

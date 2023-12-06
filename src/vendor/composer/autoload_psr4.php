@@ -17,5 +17,6 @@ return array(
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Core\\' => array($baseDir . '/app/core'),
+    'Controllers\\Admin\\' => array($baseDir . '/app/controllers/admin'),
     'Controllers\\' => array($baseDir . '/app/controllers'),
 );

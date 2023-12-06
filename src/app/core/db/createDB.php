@@ -1,8 +1,14 @@
 <?php
 
+namespace Core;
+
+require __DIR__ . '/../../../vendor/autoload.php';
+
+$pdo = DB::getInstance("mysql", "root", "root", "3306", "database")->getPDO();
+
 $pdo->exec("CREATE TABLE IF NOT EXISTS `image` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `image` VARCHAR(255) NOT NULL
+    `image` LONGBLOB NOT NULL
 );");
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS `city` (
@@ -20,9 +26,9 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `service` (
     `name` VARCHAR(255) NOT NULL
 );");
 
-$pdo->exec("CREATE TABLE IF NOT EXISTS `equipement` (
+$pdo->exec("CREATE TABLE IF NOT EXISTS `equipment` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    `name` VARCHAR(255) NOT NULL
+    `name` VARCHAR(255) NOT NULL UNIQUE
 );");
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS `user` (
@@ -39,14 +45,18 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `user` (
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS housing (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    `name` VARCHAR(255) NOT NULL,
     `id_type` INT UNSIGNED NOT NULL,
     `id_image` INT UNSIGNED NOT NULL,
     `id_city` INT UNSIGNED NOT NULL,
     `night_price` FLOAT NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
     FOREIGN KEY (`id_city`) REFERENCES `city` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`id_type`) REFERENCES `type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`id_image`) REFERENCES `image` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );");
+
+
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS `booking` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -80,13 +90,17 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `like` (
 $pdo->exec("CREATE TABLE IF NOT EXISTS `housing_service` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `id_housing` INT UNSIGNED NOT NULL,
-    `id_service` INT UNSIGNED NOT NULL
+    `id_service` INT UNSIGNED NOT NULL,
+    FOREIGN KEY (`id_housing`) REFERENCES `housing` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`id_service`) REFERENCES `service` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );");
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS `housing_equipment` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `id_housing` INT UNSIGNED NOT NULL,
-    `id_equipement` INT UNSIGNED NOT NULL
+    `id_equipment` INT UNSIGNED NOT NULL,
+    FOREIGN KEY (`id_housing`) REFERENCES `housing` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`id_equipment`) REFERENCES `equipment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );");
-
+$pdo->exec("ALTER TABLE `image` MODIFY COLUMN `image` LONGBLOB NOT NULL;");
 echo "tables created";

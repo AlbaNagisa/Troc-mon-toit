@@ -1,0 +1,48 @@
+{% extends "templates/default.html.twig" %}
+{% block title %}Admin
+{% endblock %}
+{% block content %}
+	<div class="mt-2 ml-2">
+		<a href="/admin" class="text-xl">
+			⇠ Retour au panel admin
+		</a>
+	</div>
+	<div class="flex flex-col items-center gap-10">
+		<div class="text-2xl">
+			Ajouter un equipement a la liste
+		</div>
+		{% if success[0] == 'true' %}
+			<div class="bg-green-500 w-[20%] text-white p-2 rounded">
+				{{success[1]}}
+			</div>
+		{% endif %}
+		{% if success[0] ==  'false' %}
+			<div class="bg-red-500 w-[20%] text-white p-2 rounded">
+				{{success[1]}}
+			</div>
+		{% endif %}
+		<form class='flex flex-col w-[20%] gap-3' method="POST">
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" placeholder="Name" name="name" type="text" value=''/>
+			<input class="rounded-xl p-2 bg-[#3F4A7A] shadow-xl" type="submit" value="Creer">
+		</form>
+		<div class='flex flex-col gap-5 w-[25%] '>
+			{% for equipment in equipments %}
+				<div class="flex flex-row w-full justify-between">
+					<form action="/admin/equipments/delete" method="POST">
+						<input type="hidden" name="id" value="{{equipment.id}}">
+						<input class="bg-red-500 pt-2 pb-2 pr-4 pl-4 rounded-[10px]" type="submit" value="Supprimer">
+					</form>
+					<form action="/admin/equipments/modify" class="flex w-full ml-10 justify-between" method="POST">
+						<input type="hidden" name="id" value="{{equipment.id}}">
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="text" name="name" value="{{equipment.name}}">
+						<input class="bg-yellow-500 pt-2 pb-2 pr-4 pl-4 rounded-[10px]" type="submit" value="Modifier">
+					</form>
+				</div>
+
+			{% endfor %}
+		</div>
+		<?php
+		echo "test";
+		?>
+	</div>
+</div>{% endblock %}

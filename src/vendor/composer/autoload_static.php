@@ -50,6 +50,7 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         'C' => 
         array (
             'Core\\' => 5,
+            'Controllers\\Admin\\' => 18,
             'Controllers\\' => 12,
         ),
     );
@@ -98,6 +99,10 @@ class ComposerStaticInit98d62fe22b671a96e99dd9fa4cece791
         'Core\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/core',
+        ),
+        'Controllers\\Admin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/controllers/admin',
         ),
         'Controllers\\' => 
         array (

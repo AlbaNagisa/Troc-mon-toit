@@ -8,6 +8,7 @@
     "psr-4": {
       "Router\\": "router/",
       "Controllers\\": "app/controllers/",
+      "Controllers\\Admin\\": "app/controllers/admin/",
       "Core\\": "app/core/",
       "Models\\": "app/models/"
     }
