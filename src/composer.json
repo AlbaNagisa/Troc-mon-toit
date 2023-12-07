@@ -1,8 +1,8 @@
 {
   "require": {
     "vlucas/phpdotenv": "^5.5",
-    "fzaninotto/faker": "^1.5",
-    "twig/twig": "^3.0"
+    "twig/twig": "^3.0",
+    "fakerphp/faker": "^1.5"
   },
   "autoload": {
     "psr-4": {

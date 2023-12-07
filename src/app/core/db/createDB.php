@@ -105,5 +105,4 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `housing_equipment` (
     FOREIGN KEY (`id_housing`) REFERENCES `housing` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`id_equipment`) REFERENCES `equipment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );");
-$pdo->exec("ALTER TABLE `image` MODIFY COLUMN `image` LONGBLOB NOT NULL;");
 echo "tables created";
