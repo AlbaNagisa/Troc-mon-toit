@@ -4,6 +4,8 @@
 %}
 {% block content %}
 	<div class="ml-3 mt-3 flex flex-col gap-10">
+		<a href="/">Retour</a>
+
 		<div class="text-2xl">
 			Bienvenue sur le panel d'administration
 			{{ user.username }}
@@ -12,7 +14,8 @@
 		<a href='/admin/city' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Villes</a>
 		<a href='/admin/housingType' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Type de logement</a>
 		<a href='/admin/service' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Services</a>
-
+		<a href='/admin/housing' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Logements</a>
+		<a href='/admin/review' class="flex p-4 rounded-xl p-2 bg-[#3F4A7A] w-[20%] justify-center shadow-xl">Avis</a>
 
 		<div class="flex flex-col gap-5">
 			<h2 class="text-xl">Creer un utilisateur</h2>

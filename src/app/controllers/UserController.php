@@ -2,8 +2,43 @@
 
 namespace Controllers;
 
+use Models\Booking;
+use Models\Housing;
+use Models\Like;
+use Models\Review;
+use Twig\Environment;
+
 class UserController extends Controller
 {
+    private Like $like;
+    private Housing $housing;
+    private Booking $booking;
+    private Review $review;
+    public function __construct(protected Environment $twig)
+    {
+        parent::__construct($twig);
+        $this->like = new Like();
+        $this->housing = new Housing();
+        $this->booking = new Booking();
+        $this->review = new Review();
+    }
+    public function index()
+    {
+        $likes = $this->like->getByUserId($_SESSION['user']['id']);
+        for ($i = 0; $i < count($likes); $i++) {
+            $likes[$i]['housing'] = $this->housing->getById($likes[$i]['id_housing']);
+        }
+        $bookings = $this->booking->getByUserId($_SESSION['user']['id']);
+        for ($i = 0; $i < count($bookings); $i++) {
+            $bookings[$i]['housing'] = $this->housing->getById($bookings[$i]['id_housing']);
+        }
+
+        $reviews = $this->review->getByUserId($_SESSION['user']['id']);
+        for ($i = 0; $i < count($reviews); $i++) {
+            $reviews[$i]['housing'] = $this->housing->getById($reviews[$i]['id_housing']);
+        }
+        echo $this->twig->render('user/index.html.twig', ["likes" => $likes, "bookings" => $bookings, "reviews" => $reviews]);
+    }
 
     public function login()
     {
@@ -52,7 +87,6 @@ class UserController extends Controller
                     return header("Location: /admin?userSuccess=true");
                 } else if (str_contains($referringPage, "admin") && !$user) {
                     return header("Location: /admin?userSuccess=false");
-
                 }
             }
             if (!$user) {
@@ -62,8 +96,6 @@ class UserController extends Controller
             $user['password'] = $_POST['password'];
             $_SESSION['user'] = $user;
             return header("Location: /");
-
         }
-
     }
 }

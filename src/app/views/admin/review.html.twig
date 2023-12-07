@@ -1,0 +1,56 @@
+{% extends "templates/default.html.twig" %}
+{% block title %}Admin
+{% endblock %}
+{% block content %}
+	<div class="mt-2 ml-2">
+		<a href="/admin" class="text-xl">
+			⇠ Retour au panel admin
+		</a>
+	</div>
+	<div class="flex flex-col items-center gap-10">
+		<div class="text-2xl">
+			Ajouter un commentaire a la liste
+		</div>
+		<form class='flex flex-col w-[20%] gap-3' method="POST">
+			Logement id:
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="number" name="id_housing" value=""/>
+			Utilisateur id:
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="number" name="userId" value="{{ user.id }}"/>
+			date de debut du sejour:
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="date" name="dateStart" value=""/>
+			date de fin du sejour:
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="date" name="dateEnd" value=""/>
+			commentaire:
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="text" name="comment" value=""/>
+			etoile:
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="number" min="1" max="5" name="stars" value=""/>
+			<input class="pt-2 pb-2 pr-4 pl-4 rounded-[10px]" type="submit" value="Creer">
+		</form>
+		<div class='flex flex-col gap-5 w-[25%] '>
+			{% for review in reviews %}
+				<div class="flex flex-row w-full justify-between">
+					<form action="/admin/review/delete" method="POST">
+						<input type="hidden" name="id" value="{{review.id+1}}">
+						<input class="bg-red-500 pt-2 pb-2 pr-4 pl-4 rounded-[10px]" type="submit" value="Supprimer">
+					</form>
+					<form action="/admin/review/modify" class="flex flex-col gap-2 w-full ml-10 justify-between" method="POST">
+						<input type="hidden" name="id" value="{{ review.id }}"/>
+						date de debut du sejour:
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="date" name="dateStart" value="{{ review.date_start }}"/>
+						date de fin du sejour:
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="date" name="dateEnd" value="{{ review.date_end }}"/>
+						commentaire:
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="text" name="comment" value="{{ review.comment }}"/>
+						etoile:
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="number" min="1" max="5" name="stars" value="{{ review.stars }}"/>
+						<input class="bg-yellow-500 pt-2 pb-2 pr-4 pl-4 rounded-[10px]" type="submit" value="Modifier">
+					</form>
+				</div>
+
+			{% endfor %}
+		</div>
+		<?php
+		echo "test";
+		?>
+	</div>
+</div>{% endblock %}

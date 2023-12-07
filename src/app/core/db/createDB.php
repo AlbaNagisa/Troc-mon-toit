@@ -73,8 +73,11 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS `review` (
     `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
     `id_user` INT UNSIGNED NOT NULL,
     `id_housing` INT UNSIGNED NOT NULL,
+    `date_start` DATE NOT NULL,
+    `date_end` DATE NOT NULL,
     `comment` VARCHAR(255) NOT NULL,
     `stars` INT NOT NULL,
+   
     FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`id_housing`) REFERENCES `housing` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );");

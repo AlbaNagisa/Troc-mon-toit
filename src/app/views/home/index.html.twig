@@ -4,8 +4,61 @@
 {% endblock %}
 
 {% block content %}
-	je suis connecter en tant que
-	{{user['username']}}
-	et j'ai le role
-	{{user['role']}}
+	<div class="mt-5 ml-5">
+		<a class="rounded-xl p-2 bg-[#3F4A7A]" href="/profil">
+			Profile</a>
+		{% if user.role == "Admin" %}
+			<a class="rounded-xl p-2 bg-[#3F4A7A]" href="/admin">Admin</a>
+		{% endif %}
+	</div>
+	{% for housing in housings %}
+
+		<div class="px-8 pt-6">
+			<div class="bg-[#3F4A7A] shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+				<div class="flex flex-row justify-between">
+					<div class="flex flex-col">
+						<div class="flex flex-col justify-between">
+							<h1 class="font-bold text-3xl mb-2">{{ housing.name }}</h1>
+							{% if housing.image != null %}
+								<img src="data:image/*;base64,{{ housing.image }}" alt="" class="w-64 h-48">
+							{% endif %}
+							{% if housing.image == null %}
+								<h1 class='font-bold text-xl'>Aucune image</h1>
+							{% endif %}
+							<p>Pour
+								{{ housing.night_price }}
+								€</p>
+						</div>
+						<p>
+							A
+							{{ housing.city }}</p>
+					</div>
+					<div class="flex flex-col gap-3">
+						<a class="cursor rounded-xl bg-[#273469] p-4 text-xl shadow-xl" href="/housing/{{housing.id}}">Details</a>
+						{% set liked = false %}
+						{% for like in likes %}
+							{% if like.id_housing == housing.id %}
+								{% set liked = true %}
+							{% endif %}
+						{% endfor %}
+						{% if liked == false %}
+							<form action="/addFavorite" method="POST">
+								<input type="hidden" name="id" value="{{ housing.id }}">
+								<input class="cursor rounded-xl bg-[#273469] p-4 text-xl shadow-xl" type="submit" value="Ajouter aux favoris">
+							</form>
+						{% endif %}
+						{% if liked == true %}
+							<form action="/deleteHousing" method="POST">
+								<input type="hidden" name="id" value="{{ housing.id }}">
+								<input class="cursor w-full rounded-xl bg-[#273469] p-4 text-xl shadow-xl" type="submit" value="Supprimer">
+							</form>
+						{% endif %}
+
+
+					</div>
+				</div>
+				<p>{{ housing.description }}</p>
+			</div>
+		</div>
+	{% endfor %}
 {% endblock %}

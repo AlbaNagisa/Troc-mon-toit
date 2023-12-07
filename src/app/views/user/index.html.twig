@@ -1,0 +1,74 @@
+{% extends "templates/default.html.twig" %}
+
+{% block title %}Profil
+{% endblock %}
+
+{% block content %}
+
+	<div class="flex h-screen flex-col justify-center items-center">
+		<a class="rounded-xl p-2 bg-[#3F4A7A]" href="/">
+			Retour au menu principale</a>
+		<br>
+		Pseudo :
+		{{ user.username }}
+		<br>
+		Nom :
+		{{ user.surname }}
+		<br>
+		Prénom :
+		{{ user.name }}
+		<br>
+		Email :
+		{{ user.email }}
+		<br>
+		Tel :
+		{{ user.phone_number }}
+		<br>
+		Password :
+		{{ user.password }}
+		<br>
+		Logement favoris :
+		<div class="flex flex-col gap-4">
+			{% for like in likes %}
+				<div class="rounded-xl p-2 bg-[#3F4A7A]">
+					<a href='/housing/{{like.housing.id}}'>Nom :
+						{{ like.housing.name }}</a>
+				</div>
+			{% endfor %}
+		</div>
+		Historique :
+		<div class="flex flex-col gap-4">
+			{% for history in bookings %}
+				<div class="rounded-xl p-2 bg-[#3F4A7A]">
+					<a href='/housing/{{history.housing.id}}'>Nom :
+						{{ history.housing.name }}</a>
+					<br>
+					Date de debut :
+					{{ history.date_start }}
+					<br>
+					Date de fin :
+					{{ history.date_end }}
+					<br>
+					Prix :
+					{{ history.total_price }}
+					euro
+				</div>
+			{% endfor %}
+		</div>
+		Commentaire :
+		<div class="flex flex-col gap-4">
+			{% for review in reviews %}
+				<div class="rounded-xl p-2 bg-[#3F4A7A]">
+					<a href='/housing/{{review.housing.id}}'>Nom :
+						{{ review.housing.name }}</a>
+					<br>
+					Commentaire :
+					{{ review.comment }}
+					<br>
+					Note :
+					{{ review.stars }}
+					/5
+				</div>
+			{% endfor %}
+		</div>
+	{% endblock %}

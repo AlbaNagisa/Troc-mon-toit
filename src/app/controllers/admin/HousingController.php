@@ -43,7 +43,19 @@ class HousingController extends AdminController
 
         echo $this->twig->render("admin/housing.html.twig", ["housings" => $housing, "housingTypes" => $this->housingType->getAll(), "cities" => $this->city->getAll(), "equipments" => $this->equipments->getAll(), 'services' => $this->services->getAll()]);
     }
-
+    public function search()
+    {
+        $housing = $this->housing->searchByName($_POST['search']) ?? [];
+        for ($i = 0; $i < count($housing); $i++) {
+            if ($housing[$i]['equipments'] != null) {
+                $housing[$i]['equipments'] = explode(',', $housing[$i]['equipments']);
+            }
+            if ($housing[$i]['services'] != null) {
+                $housing[$i]['services'] = explode(',', $housing[$i]['services']);
+            }
+        }
+        echo $this->twig->render("admin/housing.html.twig", ["housings" => $housing, "housingTypes" => $this->housingType->getAll(), "cities" => $this->city->getAll(), "equipments" => $this->equipments->getAll(), 'services' => $this->services->getAll()]);
+    }
     public function create()
     {
         $this->housing->create($_POST);

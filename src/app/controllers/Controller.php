@@ -30,7 +30,6 @@ class Controller
                 }
                 header("Location: /login");
             }
-
         }
 
         if (isset($_SESSION['user'])) {
@@ -48,6 +47,6 @@ class Controller
                 header("Location: /");
             }
         }
-
+        $twig->addGlobal('user', $_SESSION['user']);
     }
 }

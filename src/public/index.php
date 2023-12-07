@@ -24,7 +24,7 @@ require '../app/core/db/fillDB.php';
 
 require '../app/core/db/createDB.php';
  */
-$router->register(Method::GET->value, '/', 'Controllers\\HomeController', 'showPosts');
+$router->register(Method::GET->value, '/', 'Controllers\\HomeController', 'index');
 $router->register(Method::GET->value, '/login', 'Controllers\\UserController', 'login');
 $router->register(Method::GET->value, '/register', 'Controllers\\UserController', 'register');
 $router->register(Method::GET->value, '/admin', 'Controllers\\AdminController', 'showAdmin');
@@ -35,13 +35,29 @@ $router->register(Method::GET->value, '/admin/service', 'Controllers\\Admin\\Ser
 $router->register(Method::GET->value, '/admin/service', 'Controllers\\Admin\\ServicesController', 'index');
 $router->register(Method::GET->value, '/admin/housing', 'Controllers\\Admin\\HousingController', 'index');
 
-$router->register(Method::GET->value, '/coucou/:id', 'Controllers\\TestController', 'index');
+
+$router->register(Method::GET->value, '/housing/:id', 'Controllers\\HousingController', 'index');
+$router->register(Method::GET->value, '/profil', 'Controllers\\UserController', 'index');
+$router->register(Method::GET->value, '/admin/review', 'Controllers\\Admin\\ReviewController', 'index');
+
+$router->register(Method::POST->value, '/admin/review/delete', 'Controllers\\Admin\\ReviewController', 'delete');
+$router->register(Method::POST->value, '/admin/review/modify', 'Controllers\\Admin\\ReviewController', 'modify');
+$router->register(Method::POST->value, '/admin/review', 'Controllers\\Admin\\ReviewController', 'add');
+
+
+
+$router->register(Method::POST->value, '/housing/booking', 'Controllers\\HousingController', 'booking');
+
+
+
 
 $router->register(Method::POST->value, '/admin/equipments', 'Controllers\\Admin\\EquipmentController', 'create');
 $router->register(Method::POST->value, '/admin/city', 'Controllers\\Admin\\CityController', 'create');
 $router->register(Method::POST->value, '/admin/housingType', 'Controllers\\Admin\HousingTypeController', 'create');
 $router->register(Method::POST->value, '/admin/service', 'Controllers\\Admin\\ServicesController', 'create');
-$router->register(Method::POST->value, '/admin/housing', 'Controllers\\Admin\\HousingController', 'create');
+$router->register(Method::POST->value, '/admin/housing/create', 'Controllers\\Admin\\HousingController', 'create');
+$router->register(Method::POST->value, '/admin/housing', 'Controllers\\Admin\\HousingController', 'search');
+
 
 $router->register(Method::POST->value, '/register', 'Controllers\\UserController', 'registerPost');
 $router->register(Method::POST->value, '/login', 'Controllers\\UserController', 'loginPost');
@@ -61,7 +77,16 @@ $router->register(Method::POST->value, '/admin/service/modify', 'Controllers\\Ad
 $router->register(Method::POST->value, '/admin/housing/delete', 'Controllers\\Admin\\HousingController', 'delete');
 $router->register(Method::POST->value, '/admin/housing/modify', 'Controllers\\Admin\\HousingController', 'modify');
 
+$router->register(Method::POST->value, '/addFavorite', 'Controllers\\HousingController', 'addLike');
+$router->register(Method::POST->value, '/deleteHousing', 'Controllers\\HousingController', 'deleteLike');
 
-$router->register(Method::GET->value, '/housing', 'Controllers\\Admin\\Housing', 'housing');
+
+
+$router->register(Method::POST->value, '/review', 'Controllers\\ReviewController', 'review');
+
+
+
+
+
 
 $router->dispatch($_SERVER['REQUEST_URI']);

@@ -10,7 +10,10 @@
 	</div>
 	<div class="flex flex-col items-center gap-10">
 		<div class="text-2xl">Ajouter logement a la liste</div>
-		<form class="flex flex-col w-[20%] gap-3" method="POST" enctype="multipart/form-data">
+		<form method="POST">
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" placeholder="Nom" name="search" type="text"/>
+		</form>
+		<form class="flex flex-col w-[20%] gap-3" action="/admin/housing/create" method="POST" enctype="multipart/form-data">
 			<input class="rounded-xl p-2 bg-[#3F4A7A]" placeholder="Name" name="name" type="text"/>
 			<select class="rounded-xl p-2 bg-[#3F4A7A]" name="type">
 				{% for type in housingTypes %}
@@ -19,6 +22,7 @@
 			</select>
 			<select class="rounded-xl p-2 bg-[#3F4A7A]" name="city">
 				{% for city in cities %}
+
 					<option value="{{ city.id }}">{{ city.name }}</option>
 				{% endfor %}
 			</select>
@@ -79,7 +83,7 @@
 								<td>
 									<select class="rounded-xl p-2 bg-[#3F4A7A]" name="city">
 										{% for city in cities %}
-											<option value="{{ city.id }}">{{ city.name }}</option>
+											<option {% if city.name == housing.city %} selected {% endif %} value="{{ city.id }}">{{ city.name }}</option>
 										{% endfor %}
 									</select>
 								</td>

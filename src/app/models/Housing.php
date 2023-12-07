@@ -37,14 +37,14 @@ class Housing extends Models
                     $data['image'] = $this->pdo->lastInsertId();
                 } else {
                     $stmt = $this->pdo->prepare("INSERT INTO image (image) VALUES (:image)");
-                    $base64Image = "1";
+                    $base64Image = "";
                     $stmt->bindParam(':image', $base64Image);
                     $stmt->execute();
                     $data['image'] = $this->pdo->lastInsertId();
                 }
             } else {
                 $stmt = $this->pdo->prepare("INSERT INTO image (image) VALUES (:image)");
-                $base64Image = "1";
+                $base64Image = "";
                 $stmt->bindParam(':image', $base64Image);
                 $stmt->execute();
                 $data['image'] = $this->pdo->lastInsertId();
@@ -89,7 +89,6 @@ class Housing extends Models
             $stmt->execute();
             return $stmt->rowCount();
         } catch (\Throwable $e) {
-            echo $e->getMessage();
             return $e->getMessage();
         }
     }
@@ -217,7 +216,32 @@ class Housing extends Models
             return false;
         }
     }
-
+    public function searchByName($name)
+    {
+        try {
+            $stmt = $this->pdo->prepare("SELECT *, type.name as type, city.name as city,
+            GROUP_CONCAT(DISTINCT equipment.name) AS equipments,
+            GROUP_CONCAT(DISTINCT service.name) AS services,
+            housing.name as name, housing.id as id
+            FROM housing
+            LEFT JOIN housing_equipment ON housing.id = housing_equipment.id_housing
+            LEFT JOIN equipment ON housing_equipment.id_equipment = equipment.id
+            LEFT JOIN housing_service ON housing.id = housing_service.id_housing
+            LEFT JOIN service ON housing_service.id_service = service.id
+            INNER JOIN type ON housing.id_type = type.id
+            INNER JOIN city ON housing.id_city = city.id
+            INNER JOIN image ON housing.id_image = image.id 
+            WHERE housing.name LIKE :name
+            GROUP BY housing.id;");
+            $name = '%' . $name . '%';
+            $stmt->bindParam(':name', $name);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            echo $e->getMessage();
+            return $e->getMessage();
+        }
+    }
     private function deleteHousingServices($housingId)
     {
         try {
@@ -226,7 +250,6 @@ class Housing extends Models
             $stmt->execute();
             return $stmt->rowCount();
         } catch (\Throwable $e) {
-            echo $e->getMessage();
             return false;
         }
     }

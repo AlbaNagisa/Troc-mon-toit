@@ -1,0 +1,68 @@
+{% extends "templates/default.html.twig" %}
+{% block title %}
+	{{ housing.name }}
+{% endblock %}
+{% block content %}
+	<div class="mt-2 ml-2">
+		<a href="/">Retour</a>
+		<h1>Nom :
+			{{ housing.name }}</h1>
+		<p>Description :
+			{{ housing.description }}</p>
+		<p>Prix de la nuitee (euro) :
+			{{ housing.night_price }}</p>
+		<h1>
+			Reservation
+		</h1>
+		<form action="/housing/booking" method='POST'>
+			<input type="hidden" name="id" value="{{ housing.id }}"/>
+			debut :
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="date" name="start" value="{{ date }}" min="{{ date }}"/>
+			fin :
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="date" name="end" value="{{ date }}" min="{{ date }}"/>
+			<input type="submit" value="Reserver"/>
+		</form>
+
+		<h1>
+			Image :
+		</h1>
+		<img src="data:image/*;base64,{{ housing.image }}" alt="image de l'hebergement" width="200" height="200"/>
+		<h1>
+			Commentaire :
+		</h1>
+
+		{% for booking in bookings %}
+			{% if booking.id_housing == housing.id  %}
+				{% if booking.date_end <= date %}
+					{% if userReview|length <= 0  %}
+						<form action="/review" method='POST'>
+							<input type="hidden" name="id" value="{{ housing.id }}"/>
+							<input type="hidden" name="id_booking" value="{{ booking.id }}"/>
+							<input type="hidden" name="id_user" value="{{ user.id }}"/>
+							<input type="hidden" name="dateStart" value="{{ booking.date_start }}"/>
+							<input type="hidden" name="dateEnd" value="{{ booking.date_end }}"/>
+							<textarea class="rounded-xl p-2 bg-[#3F4A7A]" name="comment" placeholder="Commentaire"></textarea>
+							<input class="rounded-xl p-2 bg-[#3F4A7A]" type="number" name="stars" min="1" max="5" value="1"/>
+							<input type="submit" value="Commenter"/>
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			{% endfor %}
+			<div class="flex flex-col">
+				{% for review in reviews %}
+					<div class="flex flex-row">
+						<div class="flex flex-col">
+							<p>Comment :
+								{{ review.comment }}</p>
+							<p>Etoile :
+								{{ review.stars }}/5</p>
+						</div>
+						<div class="flex flex-col">
+							<p>{{ review.date }}</p>
+							<p>{{ review.name }}</p>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	{% endblock %}
