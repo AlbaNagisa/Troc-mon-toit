@@ -1,0 +1,77 @@
+{% extends "templates/default.html.twig" %}
+
+{% block title %}User Crud
+{% endblock %}
+
+{% block content %}
+	<div class="flex flex-col  gap-10">
+		<div class="mt-2 ml-2">
+			<a href="/admin" class="text-xl">
+				⇠ Retour au panel admin
+			</a>
+		</div>
+		<form method="post" class="flex flex-col gap-2 items-center">
+			<input type="text" name="username" placeholder="Pseudo" class="bg-[#3F4A7A] rounded-md p-2">
+			<input type="email" name="email" placeholder="Email" class="bg-[#3F4A7A] rounded-md p-2">
+			<input type="text" name="firstname" placeholder="Prénom" class="bg-[#3F4A7A] rounded-md p-2">
+			<input type="text" name="lastname" placeholder="Nom de famille" class="bg-[#3F4A7A] rounded-md p-2">
+			<input type="password" name="password" placeholder="Mot de passe" class="bg-[#3F4A7A] rounded-md p-2">
+			<input type="text" name="phone_number" placeholder="Numéro de téléphone" class="bg-[#3F4A7A] rounded-md p-2">
+			<input type="submit" value="Créer" class="rounded-md p-2">
+		</form>
+		<div class="flex flex-col gap-2 items-center">
+			<h1 class="text-3xl">Liste des utilisateurs</h1>
+			<table>
+				<thead>
+					<tr>
+						<th class="text-2xl">Pseudo</th>
+						<th class="text-2xl">Prenom</th>
+						<th class="text-2xl">Nom</th>
+						<th class="text-2xl">Email</th>
+						<th class="text-2xl">Mot de passe</th>
+						<th class="text-2xl">Numéro de téléphone</th>
+						<th class="text-2xl">Action</th>
+						<th class="text-2xl">Supprimer</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for u in users %}
+						<tr>
+							<form action="/admin/user/modify" method="POST">
+								<td>
+									<input type="text" name="username" placeholder="Pseudo" class="bg-[#3F4A7A] rounded-md p-2" value="{{u.username}}">
+								</td>
+								<td>
+									<input type="text" name="firstname" placeholder="Prénom" class="bg-[#3F4A7A] rounded-md p-2" value="{{u.name}}">
+
+								</td>
+								<td>
+									<input type="text" name="lastname" placeholder="Nom de famille" class="bg-[#3F4A7A] rounded-md p-2" value="{{u.surname}}">
+								</td>
+								<td>
+									<input type="email" name="email" placeholder="Email" class="bg-[#3F4A7A] rounded-md p-2" value="{{u.email}}">
+								</td>
+								<td>
+									<input type="password" name="password" placeholder="Mot de passe" class="bg-[#3F4A7A] rounded-md p-2" value="">
+								</td>
+								<td>
+									<input type="text" name="phone_number" placeholder="Numéro de téléphone" class="bg-[#3F4A7A] rounded-md p-2" value="{{u.phone_number}}">
+								</td>
+								<td>
+									<input type="hidden" name="id" value="{{ u.id }}"/>
+									<input type="submit" value="Modifier"/>
+								</td>
+							</form>
+							<td>
+								<form method="POST" action="/admin/user/delete">
+									<input type="hidden" name="id" value="{{ u.id }}"/>
+									<input type="submit" value="Supprimer"/>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

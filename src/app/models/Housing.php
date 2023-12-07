@@ -272,21 +272,26 @@ class Housing extends Models
             INNER JOIN image ON housing.id_image = image.id 
             WHERE 1 = 1";
             $stmt = $this->pdo->prepare($req);
-
+            $i = 0;
             if ($night_price != null) {
-                $req .= " AND housing.night_price <= :night_price";
+                $req .= ($i > 0 ? " OR" : " AND") . " housing.night_price <= :night_price";
+                $i++;
             }
             if ($type != null) {
-                $req .= " AND housing.id_type = :type";
+                $req .= ($i > 0 ? " OR" : " AND") . " housing.id_type = :type";
+                $i++;
             }
             if ($city != null) {
-                $req .= " AND housing.id_city = :city";
+                $req .= ($i > 0 ? " OR" : " AND") . " housing.id_city = :city";
+                $i++;
             }
             if ($equipments != null) {
-                $req .= " AND housing.id IN (SELECT id_housing FROM housing_equipment WHERE id_equipment IN (:equipments))";
+                $req .= ($i > 0 ? " OR" : " AND") . " housing.id IN (SELECT id_housing FROM housing_equipment WHERE id_equipment IN (:equipments))";
+                $i++;
             }
             if ($services != null) {
-                $req .= " AND housing.id IN (SELECT id_housing FROM housing_service WHERE id_service IN (:services))";
+                $req .= ($i > 0 ? " OR" : " AND") . " housing.id IN (SELECT id_housing FROM housing_service WHERE id_service IN (:services))";
+                $i++;
             }
             $req .= " GROUP BY housing.id;";
             $stmt = $this->pdo->prepare($req);

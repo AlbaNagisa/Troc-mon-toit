@@ -72,6 +72,19 @@
 							<p>C'est un type
 								{{ housing.type }}
 							</p>
+							Service :
+							{% for service in services %}
+								{% if service.id == housing.id_service %}
+									{{ service.name }}
+								{% endif %}
+							{% endfor %}
+							<p>Equipement :
+								{% for equipment in equipments %}
+									{% if equipment.id == housing.id_equipment %}
+										{{ equipment.name }}
+									{% endif %}
+								{% endfor %}
+							</p>
 						</div>
 						<p>
 							A

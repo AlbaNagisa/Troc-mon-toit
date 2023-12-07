@@ -36,6 +36,7 @@ $router->register(Method::GET->value, '/admin/housingType', 'Controllers\\Admin\
 $router->register(Method::GET->value, '/admin/service', 'Controllers\\Admin\\ServicesController', 'index');
 $router->register(Method::GET->value, '/admin/service', 'Controllers\\Admin\\ServicesController', 'index');
 $router->register(Method::GET->value, '/admin/housing', 'Controllers\\Admin\\HousingController', 'index');
+$router->register(Method::GET->value, '/admin/user', 'Controllers\\Admin\\UserController', 'index');
 
 
 $router->register(Method::GET->value, '/housing/:id', 'Controllers\\HousingController', 'index');
@@ -51,7 +52,9 @@ $router->register(Method::POST->value, '/admin/review', 'Controllers\\Admin\\Rev
 $router->register(Method::POST->value, '/housing/booking', 'Controllers\\HousingController', 'booking');
 
 
-
+$router->register(Method::POST->value, '/admin/user', 'Controllers\\Admin\\UserController', 'create');
+$router->register(Method::POST->value, '/admin/user/delete', 'Controllers\\Admin\\UserController', 'delete');
+$router->register(Method::POST->value, '/admin/user/modify', 'Controllers\\Admin\\UserController', 'modify');
 
 $router->register(Method::POST->value, '/admin/equipments', 'Controllers\\Admin\\EquipmentController', 'create');
 $router->register(Method::POST->value, '/admin/city', 'Controllers\\Admin\\CityController', 'create');
