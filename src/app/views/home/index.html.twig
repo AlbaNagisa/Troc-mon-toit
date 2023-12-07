@@ -11,6 +11,47 @@
 			<a class="rounded-xl p-2 bg-[#3F4A7A]" href="/admin">Admin</a>
 		{% endif %}
 	</div>
+	<div class="mt-6 ml-5">
+		<form method="POST">
+
+			<select name="city" id="city" class="rounded-xl p-2 bg-[#3F4A7A]">
+				<option value="">Ville</option>
+				{% for city in cities %}
+					<option value="{{ city.id }}">{{ city.name }}</option>
+				{% endfor %}
+			</select>
+			<select name="type" id="type" class="rounded-xl p-2 bg-[#3F4A7A]">
+				<option value="">Type</option>
+				{% for type in types %}
+					<option value="{{ type.id }}">{{ type.name }}</option>
+				{% endfor %}
+			</select>
+			<input type="number" name="price" id="price" placeholder="Prix" class="rounded-xl p-2 bg-[#3F4A7A]">
+			<p>Equipements</p>
+
+			<div class="flex flex-row gap-4">
+				{% for equipment in equipments  %}
+					<div class="flex">
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" name="equipments[]" value="{{ equipment.id }}"/>
+						<p>{{ equipment.name }}</p>
+					</div>
+				{% endfor %}
+			</div>
+			<p>Services</p>
+
+			<div class="flex flex-row gap-4">
+				{% for service in services  %}
+					<div class="flex">
+						<input class="rounded-xl p-2 bg-[#3F4A7A]" type="checkbox" name="services[]" value="{{ service.id }}"/>
+						<p>{{ service.name }}</p>
+					</div>
+
+
+				{% endfor %}
+			</div>
+			<input class="rounded-xl p-2 bg-[#3F4A7A]" type="submit" value="Rechercher">
+		</form>
+	</div>
 	{% for housing in housings %}
 
 		<div class="px-8 pt-6">
@@ -28,6 +69,9 @@
 							<p>Pour
 								{{ housing.night_price }}
 								€</p>
+							<p>C'est un type
+								{{ housing.type }}
+							</p>
 						</div>
 						<p>
 							A

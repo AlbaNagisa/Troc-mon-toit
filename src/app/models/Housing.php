@@ -253,4 +253,77 @@ class Housing extends Models
             return false;
         }
     }
+
+    public function getByFilter($night_price, $type, $city, $equipments, $services)
+    {
+        try {
+
+            $req = "SELECT *, type.name as type, city.name as city,
+            GROUP_CONCAT(DISTINCT equipment.name) AS equipments,
+            GROUP_CONCAT(DISTINCT service.name) AS services,
+            housing.name as name, housing.id as id
+            FROM housing
+            LEFT JOIN housing_equipment ON housing.id = housing_equipment.id_housing
+            LEFT JOIN equipment ON housing_equipment.id_equipment = equipment.id
+            LEFT JOIN housing_service ON housing.id = housing_service.id_housing
+            LEFT JOIN service ON housing_service.id_service = service.id
+            INNER JOIN type ON housing.id_type = type.id
+            INNER JOIN city ON housing.id_city = city.id
+            INNER JOIN image ON housing.id_image = image.id 
+            WHERE 1 = 1";
+            $stmt = $this->pdo->prepare($req);
+
+            if ($night_price != null) {
+                $req .= " AND housing.night_price <= :night_price";
+            }
+            if ($type != null) {
+                $req .= " AND housing.id_type = :type";
+            }
+            if ($city != null) {
+                $req .= " AND housing.id_city = :city";
+            }
+            if ($equipments != null) {
+                $req .= " AND housing.id IN (SELECT id_housing FROM housing_equipment WHERE id_equipment IN (:equipments))";
+            }
+            if ($services != null) {
+                $req .= " AND housing.id IN (SELECT id_housing FROM housing_service WHERE id_service IN (:services))";
+            }
+            $req .= " GROUP BY housing.id;";
+            $stmt = $this->pdo->prepare($req);
+            if ($night_price != null) {
+                $stmt->bindParam(':night_price', $night_price);
+            }
+            if ($type != null) {
+                $stmt->bindParam(':type', $type);
+            }
+            if ($city != null) {
+                $stmt->bindParam(':city', $city);
+            }
+            if ($equipments != null) {
+                $res = '';
+                for ($i = 0; $i < count($equipments); $i++) {
+                    $res .=  "$equipments[$i]";
+                    if ($i != count($equipments) - 1) {
+                        $res .= ', ';
+                    }
+                }
+                $stmt->bindParam(':equipments', $res);
+            }
+            if ($services != null) {
+                $res = '';
+                for ($i = 0; $i < count($services); $i++) {
+                    $res .=  "$services[$i]";
+                    if ($i != count($services) - 1) {
+                        $res .= ', ';
+                    }
+                }
+                $stmt->bindParam(':services', $res);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            echo $e->getMessage();
+            return $e->getMessage();
+        }
+    }
 }

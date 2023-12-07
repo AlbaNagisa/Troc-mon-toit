@@ -25,6 +25,8 @@ require '../app/core/db/fillDB.php';
 require '../app/core/db/createDB.php';
  */
 $router->register(Method::GET->value, '/', 'Controllers\\HomeController', 'index');
+$router->register(Method::POST->value, '/', 'Controllers\\HomeController', 'filter');
+
 $router->register(Method::GET->value, '/login', 'Controllers\\UserController', 'login');
 $router->register(Method::GET->value, '/register', 'Controllers\\UserController', 'register');
 $router->register(Method::GET->value, '/admin', 'Controllers\\AdminController', 'showAdmin');
